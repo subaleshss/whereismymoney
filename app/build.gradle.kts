@@ -1,11 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.services)
 }
 
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) load(file.inputStream())
+}
 android {
     namespace = "com.wimm.app"
     compileSdk = 35
@@ -18,6 +25,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "GOOGLE_CLIENT_ID",
+            "\"${localProperties["GOOGLE_CLIENT_ID"]}\""
+        )
     }
 
     buildTypes {
@@ -37,6 +50,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -52,6 +66,12 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.navigation.compose)
+
+    // Credential Manager
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.auth)
+    implementation(libs.google.identity.googleid)
 
     // Hilt
     implementation(libs.hilt.android)
