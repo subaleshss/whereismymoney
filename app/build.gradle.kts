@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.services)
+    // Removed google-services plugin as google-services.json is missing
 }
 
 val localProperties = Properties().apply {
@@ -15,12 +15,12 @@ val localProperties = Properties().apply {
 }
 android {
     namespace = "com.wimm.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.wimm.app"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.graphics.shapes)
+    implementation(libs.androidx.core.splashscreen)
 
     // Credential Manager
     implementation(libs.androidx.credentials)
@@ -82,6 +84,8 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    implementation(libs.datastore.preferences)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
